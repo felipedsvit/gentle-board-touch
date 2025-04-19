@@ -6,24 +6,20 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login, loading } = useAuth();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     
     try {
-      // Simulate login for now - will integrate with Supabase or other auth system later
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Here you would validate credentials and handle authentication
-      localStorage.setItem("isAuthenticated", "true");
+      await login(email, password);
       
       toast({
         title: "Inicio de sesión exitoso",
@@ -37,8 +33,6 @@ const Login = () => {
         description: "Credenciales inválidas. Intente nuevamente.",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 

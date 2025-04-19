@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { useAuth } from "@/hooks/use-auth";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -15,9 +16,9 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   });
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { register, loading } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -36,11 +37,8 @@ const Register = () => {
       return;
     }
     
-    setLoading(true);
-    
     try {
-      // Simulate registration for now - will integrate with auth system later
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await register(formData.email, formData.password, formData.name, formData.company);
       
       toast({
         title: "Registro exitoso",
@@ -54,8 +52,6 @@ const Register = () => {
         description: "No se pudo crear la cuenta. Intente nuevamente.",
         variant: "destructive",
       });
-    } finally {
-      setLoading(false);
     }
   };
 
